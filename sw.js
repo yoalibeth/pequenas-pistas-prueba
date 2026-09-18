@@ -1,4 +1,4 @@
-const CACHE = "pequenas-pistas-v6";
+const CACHE = "pequenas-pistas-v7";
 self.addEventListener("install", event => {
   event.waitUntil(
     caches.open(CACHE).then(cache =>

@@ -671,6 +671,43 @@ h1, h2, h3, .hero-title, .section-title, .section-card h3, .title {
 }
 </style>
 
+<style id="pista2-letter-theme">
+/* Pista 2: carta con temática de cámara / recuerdos */
+#secondLetterModal .letter-collage{
+  background:
+    radial-gradient(circle at 12% 18%,rgba(255,255,255,.35) 0 2px,transparent 3px),
+    radial-gradient(circle at 88% 72%,rgba(255,255,255,.25) 0 2px,transparent 3px),
+    linear-gradient(145deg,#d7b4b0 0%,#c99e9b 48%,#dfc1bb 100%);
+}
+#secondLetterModal .letter-tag{
+  background:#ead6cf;color:#674b49;
+  border:1px solid rgba(103,75,73,.12);
+}
+#secondLetterModal .letter-flower{
+  color:#744d55;font-size:35px;font-family:Georgia,serif;
+}
+#secondLetterModal .letter-stamp{
+  background:#ead6cf;color:#714d51;border-color:#8d6267;
+  letter-spacing:.14em;
+}
+#secondLetterModal .letter-photo{
+  background:
+    linear-gradient(145deg,#d9b8b2,#9b7775 58%,#e9d8d1);
+}
+#secondLetterModal .letter-photo:before{
+  content:"";position:absolute;left:15px;top:22px;width:56px;height:42px;
+  border:4px solid #f5eadc;border-radius:8px;
+  box-shadow:inset 0 0 0 2px #9a7674;
+}
+#secondLetterModal .letter-photo:after{
+  content:"";position:absolute;left:37px;top:36px;width:15px;height:15px;
+  border:3px solid #f5eadc;border-radius:50%;background:#a6817f;
+}
+#secondLetterModal .letter-seal{background:#754b52;color:#f0d9d4;}
+#secondLetterModal .letter-side-note{color:#60474a;}
+/* La carta de Pista 2 siempre permite entrar a la cámara, también al abrirla desde el calendario. */
+#secondLetterModal .letter-continue{display:block!important;}
+</style>
 </head>
 <body>
 <main class="app">
@@ -955,13 +992,13 @@ render(1);
   <button class="letter-close" type="button" onclick="closeSecondLetter()" aria-label="Cerrar carta">×</button>
   <div class="letter-scroll">
     <div class="letter-collage">
-      <div class="letter-tag">RECUERDOS,<br>PEQUEÑOS MOMENTOS</div>
+      <div class="letter-tag">RECUERDOS,<br>EN FOTOGRAFÍAS</div>
       <div class="letter-tape"></div>
-      <div class="letter-flower">✿</div>
-      <div class="letter-stamp">PEQUEÑAS<br>PISTAS</div>
+      <div class="letter-flower">◎</div>
+      <div class="letter-stamp">MEMORIA<br>01</div>
       <div class="letter-photo"></div>
-      <div class="letter-note">Algunos momentos<br>merecen quedarse<br>un poquito más.</div>
-      <div class="letter-seal">♡</div>
+      <div class="letter-note">guardar un momento<br>es volver a vivirlo<br>un poquito.</div>
+      <div class="letter-seal">◉</div>
       <article class="love-letter">
         <div class="letter-date">18 de septiembre, 2026</div>
         <h2>Para ti <span>♡</span></h2>
@@ -1053,21 +1090,6 @@ render(1);
   }).format(new Date(2026,8,15));
 
 
-  function localDateTime(date, time){
-    const [y,m,d] = date.split('-').map(Number);
-    const [hh,mm] = time.split(':').map(Number);
-    return new Date(y,m-1,d,hh,mm,0,0);
-  }
-
-  function isUnlocked(clue){
-    return new Date() >= localDateTime(clue.date, clue.time);
-  }
-
-  function formatUnlock(clue){
-    const d = localDateTime(clue.date, clue.time);
-    return d.toLocaleString('es-MX',{day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'});
-  }
-
   const concertDate = new Date(2026, 9, 10, 20, 0, 0, 0);
   const firstClueDate = new Date(2026, 8, 17, 20, 0, 0, 0);
 
@@ -1142,8 +1164,8 @@ render(1);
     lm.classList.toggle('first-open',!!isFirstOpen); lm.classList.add('show'); lm.setAttribute('aria-hidden','false');
   }
   function closeSecondLetter(){ const lm=document.getElementById('secondLetterModal'); lm.classList.remove('show'); lm.setAttribute('aria-hidden','true'); }
-  function continueToPhotos(){ markSecondLetterSeen(); closeSecondLetter(); openPhotos(); }
-  function openPhotos(){ closeMenu(); closeModal(); closeCalendar(); closeLetter(); const m=document.getElementById('photosModal'); m.classList.add('show'); m.setAttribute('aria-hidden','false'); }
+  function continueToPhotos(){ markSecondLetterSeen(); closeSecondLetter(); requestAnimationFrame(()=>openPhotos()); }
+  function openPhotos(){ closeMenu(); closeModal(); closeCalendar(); closeLetter(); closeSecondLetter(); const m=document.getElementById('photosModal'); if(!m)return; m.classList.add('show'); m.setAttribute('aria-hidden','false'); const frame=m.querySelector('.photos-frame'); if(frame){ try{ frame.contentWindow.scrollTo(0,0); }catch(e){} } }
   function closePhotos(){ const m=document.getElementById('photosModal'); if(!m)return; m.classList.remove('show'); m.setAttribute('aria-hidden','true'); }
 
   function maybeShowFirstClueLetter(){ return maybeShowClueLetters(); }
