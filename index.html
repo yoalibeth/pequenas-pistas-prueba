@@ -1053,6 +1053,21 @@ render(1);
   }).format(new Date(2026,8,15));
 
 
+  function localDateTime(date, time){
+    const [y,m,d] = date.split('-').map(Number);
+    const [hh,mm] = time.split(':').map(Number);
+    return new Date(y,m-1,d,hh,mm,0,0);
+  }
+
+  function isUnlocked(clue){
+    return new Date() >= localDateTime(clue.date, clue.time);
+  }
+
+  function formatUnlock(clue){
+    const d = localDateTime(clue.date, clue.time);
+    return d.toLocaleString('es-MX',{day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'});
+  }
+
   const concertDate = new Date(2026, 9, 10, 20, 0, 0, 0);
   const firstClueDate = new Date(2026, 8, 17, 20, 0, 0, 0);
 
